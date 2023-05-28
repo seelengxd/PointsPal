@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Typography } from '@mui/material';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         >
           Learn React
         </a>
+        <Typography className='text-red' variant='h1'>Hello World</Typography>
       </header>
     </div>
   );
