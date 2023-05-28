@@ -34,6 +34,7 @@ sgid_client = SgidClient(
     redirect_uri="http://localhost:5001/api/redirect",
 )
 
+
 @app.route("/")
 def root():
     return {"message": "hello world!!"}
@@ -42,8 +43,17 @@ def root():
 @app.route("/api/merchants")
 def merchantsIndex():
     """Returns an array of merchants with their discount data"""
-    return [model_to_dict(merchant, backrefs=True) for merchant in Merchant.select(Merchant).join(
-        Discount, JOIN.LEFT_OUTER)]
+    return [model_to_dict(merchant, backrefs=True) for merchant in Merchant.select(Merchant)]
+
+
+@app.route("/api/merchants/<int:id>")
+def merchantsShow(id):
+    try:
+        merchant = Merchant.get(Merchant.id == id)
+        return model_to_dict(merchant, backrefs=True)
+    except:
+        abort(404)
+
 
 @app.route("/api/auth-url")
 def get_auth_url():
@@ -94,6 +104,21 @@ def handle_redirect():
     return redirect(f"{frontend_host}/logged_in")
 
 
+def extractUserIdAndData(request):
+    session_id = request.cookies.get(SESSION_COOKIE_NAME)
+    session = session_data.get(session_id, None)
+    access_token = (
+        None
+        if session is None or "access_token" not in session
+        else session["access_token"]
+    )
+    if session is None or access_token is None:
+        abort(401)
+    sub, data = sgid_client.userinfo(
+        sub=session["sub"], access_token=access_token)
+    return sub, data
+
+
 @app.route("/api/userinfo")
 def userinfo():
     session_id = request.cookies.get(SESSION_COOKIE_NAME)
@@ -107,8 +132,11 @@ def userinfo():
     )
     if session is None or access_token is None:
         abort(401)
-    sub, data = sgid_client.userinfo(sub=session["sub"], access_token=access_token)
+    sub, data = sgid_client.userinfo(
+        sub=session["sub"], access_token=access_token)
 
+    print(data)
+    print(sub)
     return {"sub": sub, "data": data}
 
 
@@ -119,5 +147,6 @@ def logout():
     res = make_response({})
     res.delete_cookie(SESSION_COOKIE_NAME)
     return res
+
 
 app.run(debug=True, port=5001)
