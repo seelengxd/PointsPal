@@ -47,8 +47,7 @@ def merchantsIndex():
 
 @app.route("/api/merchants/<int:id>")
 def merchantsShow(id):
-    sub, data, user = extractUserIdAndDataAndUser(request)
-    print(sub)
+    # sub, data, user = extractUserIdAndDataAndUser(request)
     try:
         merchant = Merchant.get(Merchant.id == id)
         return model_to_dict(merchant, backrefs=True)

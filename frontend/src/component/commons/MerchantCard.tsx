@@ -5,44 +5,46 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
-function ButtonAction(isMember: boolean) {
-    if (isMember) {
-        return (<Button size="small" onClick={handleViewReward}>View Rewards</Button>)
-    } else {
-        return <Button size="small" onClick={handleJoin}>Join</Button>
-    }
+function ButtonAction(isMember: boolean, id: number) {
+  if (isMember) {
+    return (
+      <Link to={`/merchant/${id}`}>
+        <Button size='small'>View Rewards</Button>
+      </Link>
+    );
+  } else {
+    return (
+      <Button size='small' onClick={handleJoin}>
+        Join
+      </Button>
+    );
+  }
 }
 
 function handleJoin() {
-    window.location.href = '/merchant' //dummy code, to replace later
+  window.location.href = '/merchant'; //dummy code, to replace later
 }
 
 function handleViewReward() {
-    window.location.href = '/merchant' //dummy code, to replace later
+  window.location.href = '/merchant'; //dummy code, to replace later
 }
 
-export default function MediaCard(imageUrl: string, title: string, desc: string, isMember: boolean) {
+export default function MediaCard(imageUrl: string, title: string, desc: string, isMember: boolean, id: number) {
   return (
     <Card className='m-4 w-[320px] h-[300px] hover:scale-105 hover:transition-transform'>
-
-      <CardMedia
-        sx={{ height: 140 }}
-        image={imageUrl}
-        title={title}
-      />
+      <CardMedia sx={{ height: 140 }} image={imageUrl} title={title} />
 
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant='h5' component='div'>
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant='body2' color='text.secondary'>
           {desc}
         </Typography>
       </CardContent>
-      <CardActions>
-        {ButtonAction(isMember)}
-      </CardActions>
+      <CardActions>{ButtonAction(isMember, id)}</CardActions>
     </Card>
   );
 }

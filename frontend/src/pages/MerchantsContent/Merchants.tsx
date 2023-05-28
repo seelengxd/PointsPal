@@ -1,36 +1,48 @@
-import { Button } from '@mui/material';
-import MerchantCard from '../../component/commons/MerchantCard'
+import { Button, Container, Grid, TextField } from '@mui/material';
+import MerchantCard from '../../component/commons/MerchantCard';
+import { ApiResponse } from '../../api/useApi/useApi';
+import { MerchantService, MerchantType } from '../../api/MerchantService/MerchantService';
+import { useState } from 'react';
 
-function fillCard(imageUrl: string, title: string, desc: string, isMember: boolean) {
-  return (MerchantCard(imageUrl, title, desc, isMember))
+function fillCard(imageUrl: string, title: string, desc: string, isMember: boolean, id: number) {
+  return MerchantCard(imageUrl, title, desc, isMember, id);
 }
 
 type merchantInfo = {
-  imageUrl: string, 
-  title: string, 
-  desc: string, 
-  isMember: boolean
-}
+  imageUrl: string;
+  title: string;
+  desc: string;
+  isMember: boolean;
+};
 
 const Test = () => {
-
-  const merchantCards: merchantInfo[] = [
-    {imageUrl: "https://static.wixstatic.com/media/b461b7_7cba1dd000f0422a99f98a163eb9ae14~mv2_d_9625_4049_s_4_2.png", title: "ITEA", desc: "ITEA is a store", isMember:false},
-    {imageUrl: "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/1200px-Starbucks_Corporation_Logo_2011.svg.png", title: "STARBUCKS", desc: "Starbucks is a store", isMember:true},
-    {imageUrl: "https://centaur-wp.s3.eu-central-1.amazonaws.com/designweek/prod/content/uploads/2016/08/09165704/new-subway%C2%AE-retaurants-logo-5-HR.jpg", title: "SUBWAY", desc: "SUBWAY is a store", isMember:true},
-    {imageUrl: "https://static.wixstatic.com/media/b461b7_7cba1dd000f0422a99f98a163eb9ae14~mv2_d_9625_4049_s_4_2.png", title: "ITEA", desc: "ITEA is a store", isMember:false},
-    {imageUrl: "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/1200px-Starbucks_Corporation_Logo_2011.svg.png", title: "STARBUCKS", desc: "Starbucks is a store", isMember:true},
-    {imageUrl: "https://centaur-wp.s3.eu-central-1.amazonaws.com/designweek/prod/content/uploads/2016/08/09165704/new-subway%C2%AE-retaurants-logo-5-HR.jpg", title: "SUBWAY", desc: "SUBWAY is a store", isMember:true}
-  ]
+  const merchantsResponse: ApiResponse<MerchantType[]> = MerchantService.getMerchants();
+  const merchantsData = merchantsResponse.data || [];
+  const [query, setQuery] = useState('');
+  const filteredData = merchantsData.filter(merchant => merchant.name.toLowerCase().includes(query.toLowerCase()));
   return (
-    <div className='flex'>
-      <div className="flex flex-wrap m-4 w-screen items-center justify-center" >
-      {merchantCards.map(({imageUrl, title, desc, isMember}) => {
-        return MerchantCard(imageUrl, title, desc, isMember)
-      })}
+    <>
+      <Grid container justifyContent='center'>
+        <Grid item>
+          <TextField
+            id='standard-basic'
+            label='Search'
+            variant='standard'
+            fullWidth
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
+        </Grid>
+      </Grid>
+      <div className='flex'>
+        <div className='flex flex-wrap m-4 w-screen items-center justify-center'>
+          {filteredData.map(({ id, name, type, image }) => {
+            return MerchantCard(image, name, `${name} is a store`, type === 1, id);
+          })}
+        </div>
       </div>
-    </div>
-  )
+    </>
+  );
 };
 
 export default Test;
