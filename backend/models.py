@@ -32,6 +32,7 @@ class Discount(Model):
         database = db
 
 
-db.connect()
-db.drop_tables([Merchant, Discount])
-db.create_tables([Merchant, Discount])
+if __name__ == "__main__":
+    db.connect()
+    db.drop_tables([Merchant, Discount])
+    db.create_tables([Merchant, Discount])
