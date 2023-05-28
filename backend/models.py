@@ -13,6 +13,7 @@ class Merchant(Model):
     """
     name = CharField()
     type = IntegerField()
+    image = TextField()
 
     class Meta:
         database = db
@@ -32,4 +33,5 @@ class Discount(Model):
 
 
 db.connect()
+db.drop_tables([Merchant, Discount])
 db.create_tables([Merchant, Discount])
