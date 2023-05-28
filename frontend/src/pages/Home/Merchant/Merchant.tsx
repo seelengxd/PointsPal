@@ -2,6 +2,7 @@ import { Grid, Stack, Typography } from '@mui/material';
 import Banner from '../../../component/commons/Banner';
 import MerchantDiscounts from './MerchantDiscounts';
 import MerchantLevel from './MerchantLevel';
+import TopBar from '../../../component/TopBar';
 
 const Merchant = () => {
   const merchantName = 'Bobo King';
@@ -12,7 +13,7 @@ const Merchant = () => {
 
   return (
     <>
-      <h1>Merchant</h1>
+      <TopBar/>
       <Banner imageUrl={imgLinks[0]} />
       <Stack className='p-10' spacing={4}>
         <Typography variant='h2'>{merchantName}</Typography>

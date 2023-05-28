@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import MerchantCard from '../../component/commons/MerchantCard'
 
 function fillCard(imageUrl: string, title: string, desc: string, isMember: boolean) {
@@ -30,7 +31,6 @@ const Test = () => {
       </div>
     </div>
   )
-  // return (MerchantCard("https://static.wixstatic.com/media/b461b7_7cba1dd000f0422a99f98a163eb9ae14~mv2_d_9625_4049_s_4_2.png", "ITEA", "ITEA is a tea shop that sells tea", false))
 };
 
 export default Test;
