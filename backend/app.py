@@ -43,15 +43,14 @@ def root():
 @app.route("/api/merchants")
 def merchantsIndex():
     """Returns an array of merchants with their discount data"""
-    return [model_to_dict(merchant, backrefs=True) for merchant in Merchant.select(Merchant).join(
-        Discount, JOIN.LEFT_OUTER)]
+    return [model_to_dict(merchant, backrefs=True) for merchant in Merchant.select(Merchant)]
 
 
 @app.route("/api/merchants/<int:id>")
 def merchantsShow(id):
     try:
         merchant = Merchant.get(Merchant.id == id)
-        return model_to_dict(merchant)
+        return model_to_dict(merchant, backrefs=True)
     except:
         abort(404)
 
@@ -103,6 +102,21 @@ def handle_redirect():
     session_data[session_id] = session
 
     return redirect(f"{frontend_host}/logged_in")
+
+
+def extractUserIdAndData(request):
+    session_id = request.cookies.get(SESSION_COOKIE_NAME)
+    session = session_data.get(session_id, None)
+    access_token = (
+        None
+        if session is None or "access_token" not in session
+        else session["access_token"]
+    )
+    if session is None or access_token is None:
+        abort(401)
+    sub, data = sgid_client.userinfo(
+        sub=session["sub"], access_token=access_token)
+    return sub, data
 
 
 @app.route("/api/userinfo")
