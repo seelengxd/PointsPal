@@ -11,8 +11,9 @@ export interface MerchantType {
 export interface Discount {
   id: number;
   title: string;
-  description: string;
   code: string;
+  description: string;
+  merchant_id: number;
 }
 
 const getMerchants = (): ApiResponse<MerchantType[]> => {

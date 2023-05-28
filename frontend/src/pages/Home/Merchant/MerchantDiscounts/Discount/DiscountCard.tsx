@@ -1,12 +1,13 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import DiscountDialog from './DiscountDialog/DiscountDialog';
+import { Discount } from '../../../../../api/MerchantService/MerchantService';
 
 type Props = {
-  discount: { id: number; name: string; description: string; startDate: string; endDate: string; link: string };
+  discount: Discount;
 };
 
-const Discount = ({ discount }: Props) => {
+const DiscountCard = ({ discount }: Props) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -21,7 +22,7 @@ const Discount = ({ discount }: Props) => {
     <>
       <div key={discount.id}>
         <Button className='w-full' variant='contained' color='success' onClick={handleClickOpen}>
-          {discount.name}
+          {discount.title}
         </Button>
         {open && <DiscountDialog open={open} handleClose={handleClose} discount={discount} />}
       </div>
@@ -29,4 +30,4 @@ const Discount = ({ discount }: Props) => {
   );
 };
 
-export default Discount;
+export default DiscountCard;

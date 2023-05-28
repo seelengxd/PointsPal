@@ -1,11 +1,12 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { forwardRef } from 'react';
+import { Discount } from '../../../../../../api/MerchantService/MerchantService';
 
 type Props = {
   open: boolean;
   handleClose: () => void;
-  discount: { id: number; name: string; description: string; startDate: string; endDate: string; link: string };
+  discount: Discount;
 };
 
 const DiscountDialog = ({ open, handleClose, discount }: Props) => {
@@ -26,7 +27,7 @@ const DiscountDialog = ({ open, handleClose, discount }: Props) => {
       onClose={handleClose}
       aria-describedby='alert-dialog-slide-description'
     >
-      <DialogTitle>{discount.name}</DialogTitle>
+      <DialogTitle>{discount.title}</DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-slide-description'>
           Are you sure you want to activate the discount coupon? This action cannot be undone.

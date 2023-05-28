@@ -29,7 +29,7 @@ const useApi = <T,>(url: string, options: ApiHookOptions = {}): ApiResponse<T> =
     };
 
     fetchData();
-  }, [url, options]);
+  }, []);
 
   return { data, loading, error };
 };
