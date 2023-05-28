@@ -1,7 +1,8 @@
-from peewee import *
+# from peewee import *
+from playhouse.postgres_ext import *
 
-db = PostgresqlDatabase('points_pal', user='postgres',
-                        host="127.0.0.1", port=5432)
+db = PostgresqlExtDatabase('points_pal', user='postgres',
+                           host="127.0.0.1", port=5432)
 
 #######################################################
 
@@ -24,7 +25,7 @@ class Discount(Model):
     title = CharField()
     code = CharField()
     description = CharField()
-    merchant = ForeignKeyField(Merchant, backref="merchants")
+    merchant = ForeignKeyField(Merchant, backref="discounts")
 
     class Meta:
         database = db

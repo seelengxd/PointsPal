@@ -2,6 +2,7 @@ from flask_cors import CORS
 from flask import Flask
 from models import Merchant, Discount
 from peewee import prefetch, JOIN
+from playhouse.shortcuts import model_to_dict
 
 app = Flask(__name__)
 CORS(app)
@@ -14,8 +15,6 @@ def root():
 
 @app.route("/api/merchants")
 def merchantsIndex():
-    print(dir(JOIN))
-    print([merchant for merchant in Merchant.select().join(
-        Discount, JOIN.LEFT_OUTER).dicts()])
-
-    return {}
+    """Returns an array of merchants with their discount data"""
+    return [model_to_dict(merchant, backrefs=True) for merchant in Merchant.select(Merchant).join(
+        Discount, JOIN.LEFT_OUTER)]
