@@ -32,23 +32,26 @@ class Discount(Model):
         database = db
 
 
-class User(Model):
+class Customer(Model):
     id = CharField(primary_key=True)
+    test = CharField()
 
     class Meta:
         database = db
 
     @staticmethod
-    def getUser(id):
+    def getCustomer(id):
         try:
-            return User.get_by_id(id)
-        except DoesNotExist:
-            new_user = User(id=id)
-            new_user.save()
+            customer = Customer.get(Customer.id == id)
+            if not customer:
+                raise DoesNotExist()
+            return customer
+        except:
+            new_user = Customer.create(id=id, test="test")
             return new_user
 
 
 if __name__ == "__main__":
     db.connect()
-    db.drop_tables([Merchant, Discount, User])
-    db.create_tables([Merchant, Discount, User])
+    db.drop_tables([Merchant, Discount, Customer])
+    db.create_tables([Merchant, Discount, Customer])

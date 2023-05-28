@@ -7,8 +7,7 @@ from flask import (
     abort,
 )
 from flask_cors import CORS
-from models import Merchant, Discount
-from peewee import prefetch, JOIN
+from models import Merchant, Discount, Customer
 from playhouse.shortcuts import model_to_dict
 import os
 from sgid_client import SgidClient, generate_pkce_pair
@@ -48,6 +47,8 @@ def merchantsIndex():
 
 @app.route("/api/merchants/<int:id>")
 def merchantsShow(id):
+    sub, data, user = extractUserIdAndDataAndUser(request)
+    print(sub)
     try:
         merchant = Merchant.get(Merchant.id == id)
         return model_to_dict(merchant, backrefs=True)
@@ -100,11 +101,13 @@ def handle_redirect():
     session["access_token"] = access_token
     session["sub"] = sub
     session_data[session_id] = session
+    session["user"] = Customer.getCustomer(sub)
+    print("user", session["user"])
 
     return redirect(f"{frontend_host}/merchant")
 
 
-def extractUserIdAndData(request):
+def extractUserIdAndDataAndUser(request):
     session_id = request.cookies.get(SESSION_COOKIE_NAME)
     session = session_data.get(session_id, None)
     access_token = (
@@ -116,7 +119,7 @@ def extractUserIdAndData(request):
         abort(401)
     sub, data = sgid_client.userinfo(
         sub=session["sub"], access_token=access_token)
-    return sub, data
+    return sub, data, session["user"]
 
 
 @app.route("/api/userinfo")

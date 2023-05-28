@@ -21,7 +21,7 @@ const getMerchants = (): ApiResponse<MerchantType[]> => {
 };
 
 const getMerchantsById = (id: number): ApiResponse<MerchantType> => {
-  return useApi<MerchantType>(`/merchants/${id}`, { method: 'GET' });
+  return useApi<MerchantType>(`/merchants/${id}`, { method: 'GET', withCredentials: true });
 };
 
 const createMerchant = (merchantData: MerchantType): ApiResponse<MerchantType> => {
