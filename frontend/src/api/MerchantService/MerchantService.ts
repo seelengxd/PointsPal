@@ -31,8 +31,14 @@ const createMerchant = (merchantData: MerchantType): ApiResponse<MerchantType> =
   });
 };
 
+// got some rule of hook error when trying to use this :[
+const updateMerchant = (id: number, merchantData: MerchantType): ApiResponse<MerchantType> => {
+  return useApi<MerchantType>(`/merchants/${id}`, { method: 'PUT', data: merchantData, withCredentials: true });
+};
+
 export const MerchantService = {
   getMerchants,
   getMerchantsById,
   createMerchant,
+  updateMerchant,
 };

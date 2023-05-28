@@ -1,10 +1,11 @@
 import { CircularProgress, Stack, Typography } from '@mui/material';
 import Banner from '../../../component/commons/Banner';
 import MerchantDiscounts from './MerchantDiscounts/MerchantDiscounts';
-import MerchantLevel from './MerchantLevel';
 import TopBar from '../../../component/TopBar';
 import { MerchantService } from '../../../api/MerchantService/MerchantService';
 import { useLocation } from 'react-router';
+import SubscriptionButton from './SubscriptionButton/SubscriptionButton';
+import MerchantCard from './MerchantCard/MerchantCard';
 
 const Merchant = () => {
   const location = useLocation();

@@ -6,8 +6,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
+import { MerchantService, MerchantType } from '../../api/MerchantService/MerchantService';
+import axios from 'axios';
 
-function ButtonAction(isMember: boolean, id: number) {
+function ButtonAction(isMember: boolean, id: number, merchant: MerchantType, handleJoin: (id: number, merchant: MerchantType) => void) {
   if (isMember) {
     return (
       <Link to={`/merchant/${id}`}>
@@ -16,22 +18,26 @@ function ButtonAction(isMember: boolean, id: number) {
     );
   } else {
     return (
-      <Button size='small' onClick={handleJoin}>
+      <Button size='small' onClick={() => handleJoin(id, merchant)}>
         Join
       </Button>
     );
   }
 }
 
-function handleJoin() {
-  window.location.href = '/merchant'; //dummy code, to replace later
-}
-
 function handleViewReward() {
   window.location.href = '/merchant'; //dummy code, to replace later
 }
 
-export default function MediaCard(imageUrl: string, title: string, desc: string, isMember: boolean, id: number) {
+export default function MediaCard(
+  imageUrl: string,
+  title: string,
+  desc: string,
+  isMember: boolean,
+  id: number,
+  merchant: MerchantType,
+  handleJoin: (id: number, merchant: MerchantType) => void,
+) {
   return (
     <Card className='m-4 w-[320px] h-[300px] hover:scale-105 hover:transition-transform'>
       <CardMedia sx={{ height: 140 }} image={imageUrl} title={title} />
@@ -44,7 +50,7 @@ export default function MediaCard(imageUrl: string, title: string, desc: string,
           {desc}
         </Typography>
       </CardContent>
-      <CardActions>{ButtonAction(isMember, id)}</CardActions>
+      <CardActions>{ButtonAction(isMember, id, merchant, handleJoin)}</CardActions>
     </Card>
   );
 }

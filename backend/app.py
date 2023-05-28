@@ -5,6 +5,7 @@ from flask import (
     make_response,
     redirect,
     abort,
+    jsonify
 )
 from flask_cors import CORS
 from models import Merchant, Discount, Customer
@@ -14,6 +15,7 @@ from sgid_client import SgidClient, generate_pkce_pair
 from dotenv import load_dotenv
 from uuid import uuid4
 from urllib.parse import urlencode, parse_qs
+import peewee
 
 load_dotenv()
 
@@ -42,7 +44,7 @@ def root():
 @app.route("/api/merchants")
 def merchantsIndex():
     """Returns an array of merchants with their discount data"""
-    return [model_to_dict(merchant, backrefs=True) for merchant in Merchant.select(Merchant)]
+    return [model_to_dict(merchant, backrefs=True) for merchant in Merchant.select(Merchant).order_by(Merchant.name.desc())]
 
 
 @app.route("/api/merchants/<int:id>")
@@ -53,6 +55,25 @@ def merchantsShow(id):
         return model_to_dict(merchant, backrefs=True)
     except:
         abort(404)
+
+
+@app.route("/api/merchants/<int:id>", methods=["PUT"])
+def merchantsUpdate(id):
+    try:
+        merchant: Merchant = Merchant.get(Merchant.id == id)
+        json = request.json["data"]
+        if "discounts" in json:
+            del json["discounts"]
+        if "id" in json:
+            del json["id"]
+        query = Merchant.update(json).where(Merchant.id == id)
+        print(query.execute())
+    except peewee.DoesNotExist:
+        abort(404)
+    except Exception as e:
+        print(e)
+        abort(400)
+    return jsonify(success=True)
 
 
 @app.route("/api/auth-url")
@@ -103,7 +124,7 @@ def handle_redirect():
     session["user"] = Customer.getCustomer(sub)
     print("user", session["user"])
 
-    return redirect(f"{frontend_host}/merchant")
+    return redirect(f"{frontend_host}/merchants")
 
 
 def extractUserIdAndDataAndUser(request):

@@ -19,6 +19,10 @@ const Router = createBrowserRouter([
     element: <LoggedIn />,
   },
   {
+    path: '/merchants',
+    element: <Test />,
+  },
+  {
     path: '/merchant/*',
     element: <Merchant />,
   },
