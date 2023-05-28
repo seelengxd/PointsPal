@@ -19,7 +19,7 @@ const Router = createBrowserRouter([
     element: <LoggedIn />,
   },
   {
-    path: '/merchant',
+    path: '/merchant/*',
     element: <Merchant />,
   },
 ]);
