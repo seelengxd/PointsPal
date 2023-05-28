@@ -1,4 +1,5 @@
-import { Button, Grid, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import Discount from './Discount/Discount';
 
 const MerchantDiscounts = () => {
   const discounts = [
@@ -26,11 +27,7 @@ const MerchantDiscounts = () => {
         <Typography variant='h4'>Discounts</Typography>
         <Stack spacing={1}>
           {discounts.map(discount => (
-            <div key={discount.id}>
-              <Button className='w-full' variant='contained' color='success' href={discount.link} target='_blank'>
-                {discount.name}
-              </Button>
-            </div>
+            <Discount key={discount.id} discount={discount} />
           ))}
         </Stack>
       </Stack>

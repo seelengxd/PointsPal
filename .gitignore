@@ -1,3 +1,4 @@
 # Dependency Directory
 node_modules/
 .env
+backend/models.py
