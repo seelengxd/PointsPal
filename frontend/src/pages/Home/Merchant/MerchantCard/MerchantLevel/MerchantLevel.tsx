@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import ExperienceBar from './ExperienceBar/ExperienceBar';
+import ExperienceBar from '../../ExperienceBar/ExperienceBar';
 
 const MerchantLevel = () => {
   const tier = 'Silver';
