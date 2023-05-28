@@ -34,6 +34,7 @@ sgid_client = SgidClient(
     redirect_uri="http://localhost:5001/api/redirect",
 )
 
+
 @app.route("/")
 def root():
     return {"message": "hello world!!"}
@@ -44,6 +45,16 @@ def merchantsIndex():
     """Returns an array of merchants with their discount data"""
     return [model_to_dict(merchant, backrefs=True) for merchant in Merchant.select(Merchant).join(
         Discount, JOIN.LEFT_OUTER)]
+
+
+@app.route("/api/merchants/<int:id>")
+def merchantsShow(id):
+    try:
+        merchant = Merchant.get(Merchant.id == id)
+        return model_to_dict(merchant)
+    except:
+        abort(404)
+
 
 @app.route("/api/auth-url")
 def get_auth_url():
@@ -107,8 +118,11 @@ def userinfo():
     )
     if session is None or access_token is None:
         abort(401)
-    sub, data = sgid_client.userinfo(sub=session["sub"], access_token=access_token)
+    sub, data = sgid_client.userinfo(
+        sub=session["sub"], access_token=access_token)
 
+    print(data)
+    print(sub)
     return {"sub": sub, "data": data}
 
 
@@ -119,5 +133,6 @@ def logout():
     res = make_response({})
     res.delete_cookie(SESSION_COOKIE_NAME)
     return res
+
 
 app.run(debug=True, port=5001)
