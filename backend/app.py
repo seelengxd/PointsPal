@@ -91,7 +91,7 @@ def handle_redirect():
     session["sub"] = sub
     session_data[session_id] = session
 
-    return redirect(f"{frontend_host}/logged-in")
+    return redirect(f"{frontend_host}/logged_in")
 
 
 @app.route("/api/userinfo")

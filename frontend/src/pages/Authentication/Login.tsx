@@ -5,13 +5,13 @@ import {
     CircularProgress,
   } from '@mui/material'
 import { useCallback, useState } from 'react'
-import sgidLogo from '../assets/logo.png'
-import singpassLogo from '../assets/singpass.svg'
-import { useAuth } from '../hooks/useAuth'
+import sgidLogo from '../../assets/logo.png'
+import singpassLogo from '../../assets/singpass.svg'
+import { useAuth } from '../../hooks/useAuth'
 import { Navigate } from 'react-router-dom'
-import { BACKEND_URL } from '../config/constants'
+import { BACKEND_URL } from '../../config/constants'
   
-export const Home = (): JSX.Element => {
+export const Login = (): JSX.Element => {
   // Button loading state
   const [isLoading, setIsLoading] = useState(false)
 
