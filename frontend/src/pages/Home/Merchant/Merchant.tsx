@@ -6,6 +6,7 @@ import { MerchantService } from '../../../api/MerchantService/MerchantService';
 import { useLocation } from 'react-router';
 import SubscriptionButton from './SubscriptionButton/SubscriptionButton';
 import MerchantCard from './MerchantCard/MerchantCard';
+import MerchantDescription from './MerchantDescription/MerchantDescription';
 
 const Merchant = () => {
   const location = useLocation();
@@ -22,8 +23,8 @@ const Merchant = () => {
           <Stack className='p-10' spacing={4}>
             <Typography variant='h2'>{merchant?.name}</Typography>
             <SubscriptionButton />
+            <MerchantDescription merchant={merchant} />
             <MerchantCard />
-
             <MerchantDiscounts discounts={merchant?.discounts ?? []} />
           </Stack>
         </>
