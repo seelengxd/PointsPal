@@ -26,17 +26,20 @@
   height: 100%;
   position: absolute;
   backface-visibility: hidden;
+  border-width: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .card-front {
-  background-color: #e6e6e6;
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 .card-back {
-  background-color: #f0f0f0;
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;

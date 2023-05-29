@@ -8,7 +8,7 @@ const MerchantLevel = () => {
 
   return (
     <>
-      <Stack className='w-full border-2 rounded-lg p-6' spacing={2}>
+      <Stack className='w-full rounded-lg p-6' spacing={2}>
         <Typography variant='h4'>
           Tier <span className='text-silver'>{tier}</span>
         </Typography>
