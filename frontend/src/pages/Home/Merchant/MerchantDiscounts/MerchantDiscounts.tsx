@@ -10,7 +10,7 @@ type Props = {
 const MerchantDiscounts = ({ discounts }: Props) => {
   return (
     <>
-      <Stack className='w-full border-2 rounded-lg p-6' spacing={2}>
+      <Stack className='w-full border-2 rounded-lg p-6 drop-shadow' spacing={2}>
         <Typography variant='h4'>Discounts</Typography>
         <Stack spacing={1}>
           {discounts.map(discount => (

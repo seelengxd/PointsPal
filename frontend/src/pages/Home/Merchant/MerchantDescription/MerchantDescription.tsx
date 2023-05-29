@@ -25,7 +25,7 @@ const MerchantDescription = (props: Props) => {
 
     return (
         <>
-        <Card className="p-8 relative">
+        <Card className="p-8 relative drop-shadow">
             <Stack spacing={2}>
                 <Typography noWrap variant="h4">{description}</Typography>
                 <Typography className="text-silver" noWrap variant="h5">{location}</Typography>
