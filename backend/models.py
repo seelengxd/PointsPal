@@ -1,8 +1,18 @@
 # from peewee import *
 from playhouse.postgres_ext import *
 
-db = PostgresqlExtDatabase('points_pal', user='postgres',
-                           host="127.0.0.1", port=5432)
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+host = os.getenv("POSTGRES_HOST")
+port = os.getenv("POSTGRES_PORT")
+user = os.getenv("POSTGRES_USER")
+password = os.getenv("POSTGRES_PASSWORD")
+
+db = PostgresqlExtDatabase('points_pal', user=user,
+                           host=host, port=port, password=password)
 
 #######################################################
 

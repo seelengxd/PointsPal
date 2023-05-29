@@ -25,7 +25,7 @@ session_data = {}
 SESSION_COOKIE_NAME = "exampleAppSession"
 
 app = Flask(__name__)
-frontend_host = "http://localhost:5173"
+frontend_host = os.getenv("SGID_FRONTEND_HOST")
 CORS(app, origins=[frontend_host], supports_credentials=True)
 
 sgid_client = SgidClient(
@@ -172,4 +172,5 @@ def logout():
     return res
 
 
-app.run(debug=True, port=5001)
+if __name__ == "__main__":
+    app.run(debug=True, port=5001)
