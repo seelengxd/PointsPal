@@ -1,7 +1,8 @@
 # Lifehack 2023 - PointsPal (Programming Bodohs)
 The repository for Programming Bodohs' Lifehack 2023 project, PointsPal.
 
-[](/frontend/src/assets/PointsPalLogo.svg)
+![PointsPal](https://github.com/seelengxd/PointsPal/assets/79991214/3da9ba1f-1c94-4272-b4bc-1f8c1fca886f)
+
 
 PointsPal aims to help support our small local businesses. Technology has revolutionised and transformed industries. We've all witness how mega-companies have benefitted immensely from the integration of technology to their daily businesses. Be it streamlining management processes, or boosting customer engagement.
 
@@ -83,6 +84,7 @@ python3 app.py # or flask run
 ```
 
 **Our Developers**
+
 PointsPal was developed for LifeHack 2023. Our 4 developers spent about 12 hours working on the application from scratch, so it's not perfect! There are many features we'd like to implement but ran out of time, such as:
 1. Merchant Login
 2. Redemption of discounts via QR code
@@ -94,6 +96,9 @@ PointsPal was developed for LifeHack 2023. Our 4 developers spent about 12 hours
 We think PointsPal has to potential to be developed into something bigger. If you're interested in helping us develop PointsPal, feel free to contact any one of our developers!
 
 Leong See Leng, GitHub: @seelengxd
+
 Wang Zichen, GitHub: @zichen-3974
+
 Quek Jing Ling, Brian, GitHub: @astraxq
+
 Chloe Lim Xinying, GitHub: @chloeelim
