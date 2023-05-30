@@ -43,27 +43,6 @@ export const Login = (): JSX.Element => {
           <img src={singpassLogo} width='100%' className='' />
         </Box>
       </Stack>
-      {/* <FormControl id={iceCreamFieldId} mb={6}>
-        <FormLabel.Label>
-          Favourite ice cream flavour
-          <FormLabel.Description fontWeight={'400'}>
-            This shows how you can keep state before and after login.
-          </FormLabel.Description>
-        </FormLabel.Label>
-        <Radio.RadioGroup
-          name={iceCreamFieldId}
-          onChange={handleIceCreamSelection}
-          value={iceCream}
-        >
-          <Stack spacing="0.5rem">
-            {Object.values(IceCreamOptions).map((o, idx) => (
-              <Radio allowDeselect={false} key={idx} value={o}>
-                {o}
-              </Radio>
-            ))}
-          </Stack>
-        </Radio.RadioGroup>
-      </FormControl> */}
       <Button onClick={handleLoginBtnClick}>Login with Singpass app</Button>
     </Stack>
   );
