@@ -38,7 +38,7 @@ There might be some issues with the deployment, and it might not be up to date w
  git clone https://github.com/seelengxd/PointsPal.git
  ```
 
-1. Install the dependencies
+2. Install the dependencies
 ```
 cd PointsPal
 cd frontend
@@ -48,7 +48,7 @@ cd ../backend
 pip install -r requirements.txt # or pip3 install -r requirements.txt
 ```
 
-1. To test out our sgID integration locally, you'll need to first [register a client](https://docs.id.gov.sg/introduction/getting-started/register-your-application#step-2-register-a-new-client) in the [sgID developer's portal](https://developer.id.gov.sg/dashboard) and retrieve the client credentials. Add "http://localhost:5001/api/redirect" as a redirect URL.
+3. To test out our sgID integration locally, you'll need to first [register a client](https://docs.id.gov.sg/introduction/getting-started/register-your-application#step-2-register-a-new-client) in the [sgID developer's portal](https://developer.id.gov.sg/dashboard) and retrieve the client credentials. Add "http://localhost:5001/api/redirect" as a redirect URL.
 
     1. Once you've retrieved your client credentials, create a `.env` file in the backend folder with the following format:
     ```
@@ -61,16 +61,16 @@ pip install -r requirements.txt # or pip3 install -r requirements.txt
     SGID_FRONTEND_HOST="http://localhost:5173"
     ```
 
-1. Then, set up our database by running `python3 models.py` in the backend folder. If you see any error messages (postgres user not defined), then you'll have to set up your postgres credentials in models.py (line 4).
+4. Then, set up our database by running `python3 models.py` in the backend folder. If you see any error messages (postgres user not defined), then you'll have to set up your postgres credentials in models.py (line 4).
 
 ```
 db = PostgresqlExtDatabase('points_pal', user='<your postgres user>',
                            host="127.0.0.1", port=5432, password='<your postgres user password, if any>')
 ```
 
-1. To seed some data into the application, run `python3 seed.py` so you have some dummy data to play around with.
+5. To seed some data into the application, run `python3 seed.py` so you have some dummy data to play around with.
 
-1. Nice! You've set the application up, now run the application (both the front end and back end). Make sure that the frontend is running on port 5173 (http://localhost:5173/), and the backend on port 5001 (http://localhost:5001/). Then go to http://localhost:5173/ to see the application!
+6. Nice! You've set the application up, now run the application (both the front end and back end). Make sure that the frontend is running on port 5173 (http://localhost:5173/), and the backend on port 5001 (http://localhost:5001/). Then go to http://localhost:5173/ to see the application!
 
 ```
 # In the frontend repo, run
@@ -81,3 +81,19 @@ npm start
 # In the backend repo, run
 python3 app.py # or flask run
 ```
+
+**Our Developers**
+PointsPal was developed for LifeHack 2023. Our 4 developers spent about 12 hours working on the application from scratch, so it's not perfect! There are many features we'd like to implement but ran out of time, such as:
+1. Merchant Login
+2. Redemption of discounts via QR code
+3. Online shopping
+4. Online payment integration
+5. Better UI/ UX
+...and many more!
+
+We think PointsPal has to potential to be developed into something bigger. If you're interested in helping us develop PointsPal, feel free to contact any one of our developers!
+
+Leong See Leng, GitHub: @seelengxd
+Wang Zichen, GitHub: @zichen-3974
+Quek Jing Ling, Brian, GitHub: @astraxq
+Chloe Lim Xinying, GitHub: @chloeelim
