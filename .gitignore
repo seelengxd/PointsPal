@@ -1,4 +1,4 @@
-# Dependency Directory
+# Dependency Directory Test
 node_modules/
 .env
 backend/models.py
