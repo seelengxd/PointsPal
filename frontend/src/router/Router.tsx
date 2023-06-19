@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Test from '../pages/MerchantsContent/Merchants';
+import ConsumerHome from '../pages/ConsumerHome/ConsumerHome';
 import Home from '../pages/Home/Home';
 import Merchant from '../pages/Home/Merchant/Merchant';
 import { LoggedIn } from '../pages/LoggedIn';
@@ -20,7 +20,7 @@ const Router = createBrowserRouter([
   },
   {
     path: '/merchants',
-    element: <Test />,
+    element: <ConsumerHome />,
   },
   {
     path: '/merchant/*',

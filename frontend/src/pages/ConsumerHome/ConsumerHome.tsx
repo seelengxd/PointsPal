@@ -1,4 +1,4 @@
-import { Button, Container, Grid, TextField } from '@mui/material';
+import { Button, Container, Grid, Stack, TextField } from '@mui/material';
 import MerchantCard from '../../component/commons/MerchantCard';
 import { ApiResponse } from '../../api/useApi/useApi';
 import { MerchantService, MerchantType } from '../../api/MerchantService/MerchantService';
@@ -6,6 +6,8 @@ import { useCallback, useState } from 'react';
 import axios from 'axios';
 import TopBar from '../../component/TopBar';
 import { useNavigate } from 'react-router-dom';
+import Banner from '../../component/commons/Banner';
+import SearchBar from '../../component/ConsumerHome/SearchBar';
 
 // function fillCard(imageUrl: string, title: string, desc: string, isMember: boolean, id: number) {
 //   return MerchantCard(imageUrl, title, desc, isMember, id);
@@ -25,7 +27,7 @@ function handleScrollToTop() {
   });
 }
 
-const Test = () => {
+const ConsumerHome = () => {
   const merchantsResponse: ApiResponse<MerchantType[]> = MerchantService.getMerchants();
   const merchantsData = merchantsResponse.data || [];
   const [query, setQuery] = useState('');
@@ -51,19 +53,11 @@ const Test = () => {
   }
   return (
     <>
-      <Grid container justifyContent='center'>
-        <TopBar />
-        <Grid item>
-          <TextField
-            id='standard-basic'
-            label='Search'
-            variant='standard'
-            fullWidth
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-          />
-        </Grid>
-      </Grid>
+      <TopBar />
+      <Stack spacing={-4} justifyContent='center' alignItems='center'>
+        <Banner className='h-80' />
+        <SearchBar onInputChange={setQuery} />
+      </Stack>
       <div className='flex'>
         <div className='flex flex-wrap m-4 w-screen items-center justify-center'>
           {filteredData.map(merchant => {
@@ -81,4 +75,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default ConsumerHome;
