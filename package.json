@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "start": "cd frontend && npm start",
+    "server": "cd backend && flask run"
+  },
+  "name": "pointspal",
+  "description": "The repository for Programming Bodohs' Lifehack 2023 project, PointsPal.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seelengxd/PointsPal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seelengxd/PointsPal/issues"
+  },
+  "homepage": "https://github.com/seelengxd/PointsPal#readme"
+}
