@@ -37,7 +37,7 @@ export default function MediaCard(
 ) {
 
   return (
-    <Card className='m-4 w-[320px] h-[300px] hover:scale-105 hover:transition-transform' onClick={() => navigate(`/merchant/${id}`)}>
+    <Card className='m-4 w-[320px] h-[300px] hover:scale-105 hover:transition-transform hover:cursor-pointer relative' onClick={() => navigate(`/merchant/${id}`)}>
       <CardMedia sx={{ height: 140 }} image={imageUrl} title={title} />
 
       <CardContent>
@@ -48,7 +48,7 @@ export default function MediaCard(
           {desc}
         </Typography>
       </CardContent>
-      <CardActions>{ButtonAction(isMember, id, merchant, handleJoin)}</CardActions>
+      <CardActions className='absolute bottom-0 right-0'>{ButtonAction(isMember, id, merchant, handleJoin)}</CardActions>
     </Card>
   );
 }
