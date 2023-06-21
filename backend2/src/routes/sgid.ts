@@ -8,22 +8,7 @@ import {
   SGID_FRONTEND_HOST,
   SGID_PRIVATE_KEY,
 } from "../configs/constants";
-
-type SessionData = Record<
-  string,
-  | {
-      nonce?: string;
-      accessToken?: string;
-      codeVerifier?: string;
-      sub?: string;
-    }
-  | undefined
->;
-/**
- * In-memory store for session data.
- * In a real application, this would be a database.
- */
-const sessionData: SessionData = {};
+import { Session } from "../models/session";
 
 const SESSION_COOKIE_NAME = "exampleAppSession";
 const SESSION_COOKIE_OPTIONS = {
@@ -54,15 +39,18 @@ sgidRouter.get("/auth-url", (req, res) => {
   });
 
   // Store code verifier and nonce
-  sessionData[sessionId] = {
-    nonce,
-    codeVerifier,
-  };
-
-  // Return the authorization URL
-  return res
-    .cookie(SESSION_COOKIE_NAME, sessionId, SESSION_COOKIE_OPTIONS)
-    .json({ url });
+  Session.findOrCreate({ where: { id: sessionId } })
+    .then(([session, _]) => {
+      session.set({ nonce, codeVerifier });
+      session.save();
+    })
+    .then(
+      // Return the authorization URL
+      () =>
+        res
+          .cookie(SESSION_COOKIE_NAME, sessionId, SESSION_COOKIE_OPTIONS)
+          .json({ url })
+    );
 });
 
 sgidRouter.get("/redirect", async (req, res): Promise<void> => {
@@ -71,7 +59,12 @@ sgidRouter.get("/redirect", async (req, res): Promise<void> => {
   const sessionId = String(req.cookies[SESSION_COOKIE_NAME]);
 
   // Retrieve the code verifier from memory
-  const session = sessionData[sessionId];
+  const session = await Session.findByPk(sessionId);
+
+  if (!session) {
+    res.sendStatus(401);
+    return;
+  }
 
   // Validate that the code verifier exists for this session
   if (!session?.codeVerifier) {
@@ -89,10 +82,9 @@ sgidRouter.get("/redirect", async (req, res): Promise<void> => {
   // Store the access token and sub in session
   session.accessToken = accessToken;
   session.sub = sub;
-  sessionData[sessionId] = session;
 
   // Successful login, redirect to logged in state
-  res.redirect(`${SGID_FRONTEND_HOST}/merchants`);
+  session.save().then(() => res.redirect(`${SGID_FRONTEND_HOST}/merchants`));
 });
 
 sgidRouter.get("/userinfo", async (req, res) => {
@@ -100,7 +92,7 @@ sgidRouter.get("/userinfo", async (req, res) => {
   const sessionId = String(req.cookies[SESSION_COOKIE_NAME]);
 
   // Retrieve the access token and sub
-  const session = sessionData[sessionId];
+  const session = await Session.findByPk(sessionId);
   const accessToken = session?.accessToken;
   const sub = session?.sub;
 
