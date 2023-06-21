@@ -1,4 +1,3 @@
-import SgidClient from "@opengovsg/sgid-client";
 import * as dotenv from "dotenv";
 
 dotenv.config();
