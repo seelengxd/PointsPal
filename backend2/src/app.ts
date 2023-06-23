@@ -4,8 +4,19 @@ import cookieParser from "cookie-parser";
 import open from "open";
 import morgan from "morgan";
 import apiRouter from "./routes";
-import { PORT, SGID_FRONTEND_HOST } from "./configs/constants";
+import session from "express-session";
+import passport from "passport";
+import passportCustom from "passport-custom";
+import {
+  PORT,
+  SESSION_COOKIE_NAME,
+  SGID_FRONTEND_HOST,
+  sgid,
+} from "./configs/constants";
+import { Session } from "./models/session";
+import { User } from "./models/user";
 
+const CustomStrategy = passportCustom.Strategy;
 const app = express();
 
 app.use(
@@ -15,10 +26,67 @@ app.use(
   })
 );
 
+passport.use(
+  new CustomStrategy(async function (req, callback) {
+    // custom logic here
+    // parse cookie
+    // Retrieve the session ID
+    const sessionId = String(req.cookies[SESSION_COOKIE_NAME]);
+
+    // Retrieve the access token and sub
+    const session = await Session.findByPk(sessionId);
+    const accessToken = session?.accessToken;
+    const sub = session?.sub;
+
+    // if fail, error here
+    if (
+      session === undefined ||
+      accessToken === undefined ||
+      sub === undefined
+    ) {
+      callback("Invalid session");
+      return;
+    }
+    // get user
+    const [user, created] = await User.findOrBuild({ where: { sub } });
+    if (!created) {
+      const userinfo = await sgid.userinfo({
+        accessToken,
+        sub,
+      });
+      user.name = userinfo.data["myinfo.name"];
+      await user.save();
+    }
+    callback(null, user);
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, (user as User).sub);
+});
+
+passport.deserializeUser(async function (id, done) {
+  try {
+    const user = await User.findByPk(id as string);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
 const initServer = async (): Promise<void> => {
   try {
     app.use(morgan("tiny"));
     app.use(cookieParser());
+
+    // for auth
+    app.use(
+      session({ secret: "cats", resave: false, saveUninitialized: true })
+    );
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use(express.urlencoded({ extended: false }));
+
     app.use("/api", apiRouter);
 
     app.listen(PORT, () => {

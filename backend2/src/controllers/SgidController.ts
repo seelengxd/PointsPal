@@ -2,25 +2,16 @@ import SgidClient, { generatePkcePair } from "@opengovsg/sgid-client";
 import { Request, Response } from "express";
 import crypto from "crypto";
 import {
-  PORT,
-  SGID_CLIENT_ID,
-  SGID_CLIENT_SECRET,
+  SESSION_COOKIE_NAME,
   SGID_FRONTEND_HOST,
-  SGID_PRIVATE_KEY,
+  sgid,
 } from "../configs/constants";
 import { Session } from "../models/session";
+import passport from "passport";
 
-const SESSION_COOKIE_NAME = "exampleAppSession";
 const SESSION_COOKIE_OPTIONS = {
   httpOnly: true,
 };
-
-const sgid = new SgidClient({
-  clientId: SGID_CLIENT_ID,
-  clientSecret: SGID_CLIENT_SECRET,
-  privateKey: SGID_PRIVATE_KEY,
-  redirectUri: `http://localhost:${PORT}/api/redirect`,
-});
 
 export const getAuthUrl = (req: Request, res: Response) => {
   // Generate a session ID
@@ -85,26 +76,33 @@ export const redirect = async (req: Request, res: Response): Promise<void> => {
   session.save().then(() => res.redirect(`${SGID_FRONTEND_HOST}/merchants`));
 };
 
-export const getUserInfo = async (req: Request, res: Response) => {
-  // Retrieve the session ID
-  const sessionId = String(req.cookies[SESSION_COOKIE_NAME]);
+export const getUserInfo = [
+  passport.authenticate("custom", { failureRedirect: SGID_FRONTEND_HOST }),
+  async (req: Request, res: Response) => {
+    // Retrieve the session ID
+    const sessionId = String(req.cookies[SESSION_COOKIE_NAME]);
 
-  // Retrieve the access token and sub
-  const session = await Session.findByPk(sessionId);
-  const accessToken = session?.accessToken;
-  const sub = session?.sub;
+    // Retrieve the access token and sub
+    const session = await Session.findByPk(sessionId);
+    const accessToken = session?.accessToken;
+    const sub = session?.sub;
 
-  // User is not authenticated
-  if (session === undefined || accessToken === undefined || sub === undefined) {
-    return res.sendStatus(401);
-  }
+    // User is not authenticated
+    if (
+      session === undefined ||
+      accessToken === undefined ||
+      sub === undefined
+    ) {
+      return res.sendStatus(401);
+    }
 
-  // Request user info using the access token
-  const userinfo = await sgid.userinfo({
-    accessToken,
-    sub,
-  });
+    // Request user info using the access token
+    const userinfo = await sgid.userinfo({
+      accessToken,
+      sub,
+    });
 
-  // Return the user info
-  return res.json(userinfo);
-};
+    // Return the user info
+    return res.json(userinfo);
+  },
+];
