@@ -13,3 +13,5 @@ Merchant.sync({ alter: true });
 Discount.sync({ alter: true });
 User.sync({ alter: true });
 Subscription.sync({ alter: true });
+
+export default { Discount, Merchant, Subscription, User };
