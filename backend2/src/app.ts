@@ -16,6 +16,8 @@ import {
 import { Session } from "./models/session";
 import { User } from "./models/user";
 
+import "./models/associations";
+
 const CustomStrategy = passportCustom.Strategy;
 const app = express();
 
