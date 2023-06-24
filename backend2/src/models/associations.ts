@@ -8,6 +8,10 @@ Discount.belongsTo(Merchant);
 
 Merchant.belongsToMany(User, { through: Subscription });
 User.belongsToMany(Merchant, { through: Subscription });
+Merchant.hasMany(Subscription);
+Subscription.belongsTo(Merchant);
+User.hasMany(Subscription);
+Subscription.belongsTo(User);
 
 Merchant.sync({ alter: true });
 Discount.sync({ alter: true });

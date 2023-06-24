@@ -75,7 +75,7 @@ const Test = () => {
         <div className='flex flex-wrap m-4 w-screen items-center justify-center'>
           {filteredData.map(merchant => {
             const { id, name, type, image } = merchant;
-            return MerchantCard(image, name, `${name} is a store`, type === 1, id, merchant, () => handleJoin(id, merchant), navigate);
+            return MerchantCard(image, name, `${name} is a store`, merchant.is_subscribed, id, merchant, () => handleJoin(id, merchant), navigate);
           })}
         </div>
       </div>

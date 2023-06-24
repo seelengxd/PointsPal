@@ -51,8 +51,9 @@ passport.use(
       return;
     }
     // get user
-    const [user, created] = await User.findOrBuild({ where: { sub } });
-    if (!created) {
+    const [user, created] = await User.findOrCreate({ where: { sub } });
+    if (created) {
+      console.log({ accessToken, sub, sgid });
       const userinfo = await sgid.userinfo({
         accessToken,
         sub,

@@ -6,6 +6,7 @@ export interface MerchantType {
   type: number;
   discounts: Discount[];
   image: string;
+  is_subscribed: boolean;
 }
 
 export interface Discount {
