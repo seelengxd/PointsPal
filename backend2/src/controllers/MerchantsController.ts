@@ -51,3 +51,24 @@ export const show: RequestHandler[] = [
     res.json(merchant.toJSON());
   },
 ];
+
+export const toggleSubscription: RequestHandler[] = [
+  passport.authenticate("custom", { failWithError: true }),
+  async (req, res) => {
+    const merchantId = req.params.id;
+    const userSub = req.user.sub as string;
+
+    // Subscribe if not already subscribed.
+    const [subscription, created] = await Subscription.findOrCreate({
+      where: {
+        merchantId,
+        userSub,
+      },
+    });
+
+    // Unsubscribe if already subscribed.
+    if (!created) {
+      await subscription.destroy();
+    }
+  },
+];

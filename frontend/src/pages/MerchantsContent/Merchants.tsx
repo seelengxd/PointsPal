@@ -43,9 +43,9 @@ const Test = () => {
   );
   function handleJoin(id: number, merchant: MerchantType) {
     // window.location.href = '/merchant'; //dummy code, to replace later
-    const fullUrl = process.env.REACT_APP_API_URL + `/merchants/${id}`;
+    const fullUrl = process.env.REACT_APP_API_URL + `/merchants/${id}/toggleSubscription`;
     axios
-      .put(fullUrl, { data: { ...merchant, type: 1 }, withCredentials: true })
+      .get(fullUrl, {withCredentials: true })
       .then(() => axios.get(process.env.REACT_APP_API_URL + '/merchants'))
       .then(resp => setUpdatedMerchantsData(resp.data));
     setIsSomethingUpdated(true);
