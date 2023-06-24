@@ -8,9 +8,9 @@ const SubscriptionButton = (props: {isSubscribed: boolean, merchant: MerchantTyp
 
   function onSubscription() {
     // window.location.href = '/merchant'; //dummy code, to replace later
-    const fullUrl = process.env.REACT_APP_API_URL + `/merchants/${props.merchant.id}`;
+    const fullUrl = process.env.REACT_APP_API_URL + `/merchants/${props.merchant.id}/toggleSubscription`;
     axios
-      .put(fullUrl, { data: { ...props.merchant, type: props.merchant.type === 1 ? 2 : 1 }, withCredentials: true })
+      .get(fullUrl, {withCredentials: true})
       .then(() => axios.get(process.env.REACT_APP_API_URL + '/merchants'))
       .then(() => setSubscription(!subscription))
       .then(() => window.location.reload()); // too lazy to do this properly sorry

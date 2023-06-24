@@ -5,7 +5,7 @@ import { MerchantService, MerchantType } from '../../api/MerchantService/Merchan
 import { useCallback, useState } from 'react';
 import axios from 'axios';
 import TopBar from '../../component/TopBar';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 
 // function fillCard(imageUrl: string, title: string, desc: string, isMember: boolean, id: number) {
 //   return MerchantCard(imageUrl, title, desc, isMember, id);
@@ -37,18 +37,25 @@ const Test = () => {
   // i know this is scuffed but i have no idea how to make MerchantService refire without throwing hook errors
   const [isSomethingUpdated, setIsSomethingUpdated] = useState(false);
   const [updatedMerchantsData, setUpdatedMerchantsData] = useState<MerchantType[]>([]);
-  const filteredData = (isSomethingUpdated ? updatedMerchantsData : merchantsData).filter(merchant =>
+  const data = isSomethingUpdated ? updatedMerchantsData : merchantsData
+  const filteredData = data.filter(merchant =>
     merchant.name.toLowerCase().includes(query.toLowerCase()),
   );
   function handleJoin(id: number, merchant: MerchantType) {
     // window.location.href = '/merchant'; //dummy code, to replace later
-    const fullUrl = process.env.REACT_APP_API_URL + `/merchants/${id}`;
+    const fullUrl = process.env.REACT_APP_API_URL + `/merchants/${id}/toggleSubscription`;
     axios
-      .put(fullUrl, { data: { ...merchant, type: 1 }, withCredentials: true })
+      .get(fullUrl, {withCredentials: true })
       .then(() => axios.get(process.env.REACT_APP_API_URL + '/merchants'))
       .then(resp => setUpdatedMerchantsData(resp.data));
     setIsSomethingUpdated(true);
   }
+
+  // auth failure
+  if (merchantsResponse?.error) {
+    navigate("/");
+  }
+
   return (
     <>
       <Grid container justifyContent='center'>
@@ -68,7 +75,7 @@ const Test = () => {
         <div className='flex flex-wrap m-4 w-screen items-center justify-center'>
           {filteredData.map(merchant => {
             const { id, name, type, image } = merchant;
-            return MerchantCard(image, name, `${name} is a store`, type === 1, id, merchant, () => handleJoin(id, merchant), navigate);
+            return MerchantCard(image, name, `${name} is a store`, merchant.is_subscribed, id, merchant, () => handleJoin(id, merchant), navigate);
           })}
         </div>
       </div>

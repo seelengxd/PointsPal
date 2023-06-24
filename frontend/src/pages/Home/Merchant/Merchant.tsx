@@ -2,7 +2,7 @@ import { Card, CardHeader, CircularProgress, Stack, Typography } from '@mui/mate
 import Banner from '../../../component/commons/Banner';
 import MerchantDiscounts from './MerchantDiscounts/MerchantDiscounts';
 import TopBar from '../../../component/TopBar';
-import { MerchantService, MerchantType } from '../../../api/MerchantService/MerchantService';
+import { MerchantService } from '../../../api/MerchantService/MerchantService';
 import { useLocation } from 'react-router';
 import SubscriptionButton from './SubscriptionButton/SubscriptionButton';
 import MerchantCard from './MerchantCard/MerchantCard';
@@ -23,10 +23,10 @@ const Merchant = () => {
           <Banner imageUrl={merchant?.image} />
           <Stack className='p-10' spacing={4}>
             <Typography variant='h2'>{merchant?.name}</Typography>
-            <SubscriptionButton isSubscribed={merchant?.type == 1 ?? false} merchant={merchant} />
+            <SubscriptionButton isSubscribed={merchant.is_subscribed} merchant={merchant} />
             <MerchantDescription merchant={merchant} />
             {
-              merchant.type == 1 ?
+              merchant.is_subscribed ?
               (<>
                 <MerchantCard />
                 <MerchantDiscounts discounts={merchant?.discounts ?? []} />
