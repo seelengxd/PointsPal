@@ -5,7 +5,7 @@ import { MerchantService, MerchantType } from '../../api/MerchantService/Merchan
 import { useCallback, useState } from 'react';
 import axios from 'axios';
 import TopBar from '../../component/TopBar';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 
 // function fillCard(imageUrl: string, title: string, desc: string, isMember: boolean, id: number) {
 //   return MerchantCard(imageUrl, title, desc, isMember, id);
@@ -37,7 +37,8 @@ const Test = () => {
   // i know this is scuffed but i have no idea how to make MerchantService refire without throwing hook errors
   const [isSomethingUpdated, setIsSomethingUpdated] = useState(false);
   const [updatedMerchantsData, setUpdatedMerchantsData] = useState<MerchantType[]>([]);
-  const filteredData = (isSomethingUpdated ? updatedMerchantsData : merchantsData).filter(merchant =>
+  const data = isSomethingUpdated ? updatedMerchantsData : merchantsData
+  const filteredData = data.filter(merchant =>
     merchant.name.toLowerCase().includes(query.toLowerCase()),
   );
   function handleJoin(id: number, merchant: MerchantType) {
@@ -49,6 +50,12 @@ const Test = () => {
       .then(resp => setUpdatedMerchantsData(resp.data));
     setIsSomethingUpdated(true);
   }
+
+  // auth failure
+  if (merchantsResponse?.error) {
+    navigate("/");
+  }
+
   return (
     <>
       <Grid container justifyContent='center'>

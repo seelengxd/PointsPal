@@ -17,7 +17,7 @@ export interface Discount {
 }
 
 const getMerchants = (): ApiResponse<MerchantType[]> => {
-  return useApi<MerchantType[]>('/merchants', { method: 'GET' });
+  return useApi<MerchantType[]>('/merchants', { method: 'GET', withCredentials: true });
 };
 
 const getMerchantsById = (id: number): ApiResponse<MerchantType> => {

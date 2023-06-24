@@ -46,7 +46,8 @@ passport.use(
       accessToken === undefined ||
       sub === undefined
     ) {
-      callback("Invalid session");
+      console.log({ session, accessToken, sub });
+      callback(null, false);
       return;
     }
     // get user
